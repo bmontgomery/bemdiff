@@ -36,4 +36,7 @@ $y = 1;
 #first, see if it's a diagonal
 if ($oldString[$x - 1] == $newString[$y - 1]) {
   print "diagonal!!";
+  $editMatrix->setValue($x, $y, $editMatrix->getValue($x - 1, $y - 1));
 }
+
+$editMatrix->print;
