@@ -62,7 +62,8 @@ while($x != 1 || $y != 1) {
   $dir = $editMatrix->getValue($x, $y)->getDirection();
   #print "x: $x, y: $y; dir: $dir\n";
   if (!($dir eq "d")) {
-    unshift(@steps, $dir);
+    $index = $dir eq "l" ? $x : $y;
+    unshift(@steps, { _direction => $dir, _index => $index});
   }
   $x -= $dir eq "d" || $dir eq "l" ? 1 : 0;
   $y -= $dir eq "d" || $dir eq "t" ? 1 : 0;
