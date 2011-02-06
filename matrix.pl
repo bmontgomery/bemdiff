@@ -35,12 +35,14 @@ sub setValue {
   $self->{ _matrixArray }[$x + $y * $self->{ _yDim }] = $value;
 }
 
-# this method prints out the matrix in an easy to read format. mostly for debugging purposes.
+# this method prints out the matrix in an easy to read format. it allows for a parameter which tells what method to run during the print. mostly for debugging purposes.
 sub print {
   $self = shift;
+  $method = shift;
   for ($r = 0; $r < $self->{ _yDim }; $r++) {
     for ($c = 0; $c < $self->{ _xDim }; $c++) {
-      print " $self->{ _matrixArray }[$c + $r * $self->{ _yDim }] ";
+      $printVal = $self->{ _matrixArray }[$c + $r * $self->{ _yDim }]->$method;
+      print " $printVal ";
     }
     print "\n";
   }
