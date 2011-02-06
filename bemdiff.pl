@@ -62,8 +62,7 @@ while($x != 1 || $y != 1) {
   $dir = $editMatrix->getValue($x, $y)->getDirection();
   #print "x: $x, y: $y; dir: $dir\n";
   if (!($dir eq "d")) {
-    $index = $dir eq "l" ? $x : $y;
-    unshift(@steps, { _direction => $dir, _index => $index});
+    unshift(@steps, { _direction => $dir, _indexA => $x - 2, _indexB => $y - 2});
   }
   $x -= $dir eq "d" || $dir eq "l" ? 1 : 0;
   $y -= $dir eq "d" || $dir eq "t" ? 1 : 0;
@@ -71,5 +70,12 @@ while($x != 1 || $y != 1) {
 
 #print out the steps
 foreach (@steps) {
-  print "$_\n";
+  $action = if($_->{ _direction } eq "l") ? "delete at" : "insert from";
+  print "$action $_->{ _index }\n";
+}
+
+#write out a human friendly representation of the change which were made
+$diffString = $oldString;
+foreach (@steps) {
+
 }
