@@ -86,7 +86,7 @@ $indicatorOffset = 0;
 foreach (@steps) {
   if ($_->{ _direction } eq "l") {
     $adjIndexA = $_->{ _indexA } + $offset - 1;
-    $adjIndexOffset = $_->{ _indexA } + $indicatorOffset;
+    $adjIndexOffset = $adjIndexA + $indicatorOffset;
     $charToDel = substr($oldString, $adjIndexA - $offset, 1);
     print "delete char at index $adjIndexA (\"$charToDel\")\n";
     $indicator[$adjIndexOffset] = "-";
@@ -94,7 +94,7 @@ foreach (@steps) {
   } elsif ($_->{ _direction } eq "t") {
     $adjIndexA = $_->{ _indexA } + $offset;
     $adjIndexB = $_->{ _indexB } - 1;
-    $adjIndexOffset = $_->{ _indexA } + $indicatorOffset;
+    $adjIndexOffset = $adjIndexA + $indicatorOffset;
     $charToIns = substr($newString, $adjIndexB, 1);
     print "insert char from the new string at index $adjIndexB (\"$charToIns\") into the old string at index $adjIndexA\n";
     $offset++;
