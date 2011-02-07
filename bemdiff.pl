@@ -50,7 +50,7 @@ for ($x = 2; $x <= $colCount; $x++) {
   }
 }
 
-$editMatrix->print("getVector");
+#$editMatrix->print("getVector");
 
 #transform the edit matrix into the minimum list of steps to transform the old string into the new string
 #start at the bottom-right node, and move backwards through the edit matrix, following the recorded directions
@@ -79,8 +79,8 @@ for ($i = 0; $i < length($oldString) + length($newString); $i++) {
   $indicator[$i] = " "; 
 }
 
-print "$oldString\n";
-print "$newString\n";
+#print "$oldString\n";
+#print "$newString\n";
 $offset = 0;
 $indicatorOffset = 0;
 foreach (@steps) {
@@ -88,19 +88,19 @@ foreach (@steps) {
     $adjIndexA = $_->{ _indexA } + $offset - 1;
     $adjIndexOffset = $adjIndexA + $indicatorOffset;
     $charToDel = substr($oldString, $adjIndexA - $offset, 1);
-    print "delete char at index $adjIndexA (\"$charToDel\")\n";
+    #print "delete char at index $adjIndexA (\"$charToDel\")\n";
     $indicator[$adjIndexOffset] = "-";
     $offset--;
+    $indicatorOffset++;
   } elsif ($_->{ _direction } eq "t") {
     $adjIndexA = $_->{ _indexA } + $offset;
     $adjIndexB = $_->{ _indexB } - 1;
     $adjIndexOffset = $adjIndexA + $indicatorOffset;
     $charToIns = substr($newString, $adjIndexB, 1);
-    print "insert char from the new string at index $adjIndexB (\"$charToIns\") into the old string at index $adjIndexA\n";
+    #print "insert char from the new string at index $adjIndexB (\"$charToIns\") into the old string at index $adjIndexA\n";
     $offset++;
     splice(@diffChars, $adjIndexOffset, 0, $charToIns);
     $indicator[$adjIndexOffset] = "+";
-    $indicatorOffset++;
   }
 }
 
