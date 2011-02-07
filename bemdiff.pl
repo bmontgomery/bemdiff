@@ -76,27 +76,34 @@ while($x != 1 || $y != 1) {
 @diffChars = split("", $oldString);
 @indicator = ();
 for ($i = 0; $i < length($oldString) + length($newString); $i++) { 
-  $indicator[$i] = ""; 
+  $indicator[$i] = " "; 
 }
 
 print "$oldString\n";
 print "$newString\n";
 $offset = 0;
+$indicatorOffset = 0;
 foreach (@steps) {
   if ($_->{ _direction } eq "l") {
     $adjIndexA = $_->{ _indexA } + $offset - 1;
+    $adjIndexOffset = $_->{ _indexA } + $indicatorOffset;
     $charToDel = substr($oldString, $adjIndexA - $offset, 1);
     print "delete char at index $adjIndexA (\"$charToDel\")\n";
+    $indicator[$adjIndexOffset] = "-";
     $offset--;
   } elsif ($_->{ _direction } eq "t") {
     $adjIndexA = $_->{ _indexA } + $offset;
     $adjIndexB = $_->{ _indexB } - 1;
+    $adjIndexOffset = $_->{ _indexA } + $indicatorOffset;
     $charToIns = substr($newString, $adjIndexB, 1);
     print "insert char from the new string at index $adjIndexB (\"$charToIns\") into the old string at index $adjIndexA\n";
     $offset++;
+    splice(@diffChars, $adjIndexOffset, 0, $charToIns);
+    $indicator[$adjIndexOffset] = "+";
+    $indicatorOffset++;
   }
 }
 
 $diffString = join("", @diffChars);
 $indicatorString = join("", @indicator);
-#print "$diffString\n$indicatorString\n";
+print "$diffString\n$indicatorString\n";
