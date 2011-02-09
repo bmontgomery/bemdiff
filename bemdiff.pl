@@ -8,31 +8,59 @@ $newFilePath = $ARGV[1];
 # read in the lines of each file, build a dictionary of lines
 open($OLDFILE, $oldFilePath) or die("error reading $oldFilePath");
 open($NEWFILE, $newFilePath) or die("error reading $newFilePath");
-%lines = ();
 
-# this function reads lines from a file handle and appends them to
-# a hash if the line doesn't already exist in the hash
-# this function expects the first argument to be the file handle,
-# the second argument to be the hash
+# the %lines hash stores the unique lines from both files
+#   "we the people" => 0
+#   "of the united states of america" => 1
+# the %map hash stores the same information, but backwards - the key
+# is the number, the value is the text
+#   0 => "we the people"
+#   1 => "of the united states of america"
+%lines = ();
+%map = ();
+@oldFileMap = ();
+@newFileMap = ();
+
 sub buildHash {
   my $file = shift;
   my $hashref = shift;
+  my $maphashref = shift;
+  my $filemapref = shift;
+  my $counter = 0;
   while ($line = <$file>) {
     chomp($line);
+    my $hashCount = scalar(keys(%{$hashref}));
     if (!defined($hashref->{$line})) {
-      $hashref->{$line} = $line;
+      $hashref->{$line} = $hashCount; 
+      $maphashref->{$hashCount} = $line;
     }
+    @{$filemapref}[$counter] = $hashref->{$line};
+    $counter++;
   }
 }
 
 # read from old file
-buildHash($OLDFILE, \%lines);
-buildHash($NEWFILE, \%lines);
+buildHash($OLDFILE, \%lines, \%map, \@oldFileMap);
+buildHash($NEWFILE, \%lines, \%map, \@newFileMap);
 
+# print out the hashes for debugging
 for my $key (keys(%lines)) {
-  print "$key\n";
+  print "$key: $lines{$key}\n";
 }
 
+# print out the hashes for debugging
+for my $key (keys(%map)) {
+  print "$key: $map{$key}\n";
+}
+
+# print out arrays for debugging
+foreach (@oldFileMap) {
+  print "$_\n";
+}
+
+foreach (@newFileMap) {
+  print "$_\n";
+}
 # build edit distance matrix
 #$colCount = length($oldString) + 1;
 #$rowCount = length($newString) + 1;
